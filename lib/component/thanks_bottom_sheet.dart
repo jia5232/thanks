@@ -2,47 +2,90 @@ import 'package:flutter/material.dart';
 import 'package:thanks_life_daily/component/custom_text_field.dart';
 import 'package:thanks_life_daily/const/colors.dart';
 
-class ThanksBottomSheet extends StatelessWidget {
+class ThanksBottomSheet extends StatefulWidget {
+
   const ThanksBottomSheet({super.key});
+
+  @override
+  State<ThanksBottomSheet> createState() => _ThanksBottomSheetState();
+}
+
+class _ThanksBottomSheetState extends State<ThanksBottomSheet> {
+  final GlobalKey<FormState> formKey = GlobalKey();
+
+  String? content;
 
   @override
   Widget build(BuildContext context) {
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
 
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Container(
-        height: MediaQuery.of(context).size.height/2 + bottomInset/2,
+        height: MediaQuery.of(context).size.height / 2 + bottomInset / 2,
         color: Colors.pink.shade50,
         child: Padding(
           padding: EdgeInsets.only(bottom: bottomInset),
           child: Padding(
-            padding: EdgeInsets.only(left: 32.0, right: 32.0, top: 10.0, bottom: 32.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 16.0),
-                Expanded(
-                  child: CustomTextField(
-                    lable: '오늘의 감사한 일',
+            padding: EdgeInsets.only(
+                left: 32.0, right: 32.0, top: 10.0, bottom: 32.0),
+            child: Form(
+              key: formKey, //formKey는 form의 컨트롤러처럼 작동한다.
+              autovalidateMode: AutovalidateMode.always,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 16.0),
+                  Expanded(
+                    child: CustomTextField(
+                      lable: '오늘의 감사한 일',
+                      onSaved: onContentSaved,
+                    ),
                   ),
-                ),
-                SizedBox(height: 8.0),
-                _SaveButton(),
-                SizedBox(height: 8.0),
-              ],
+                  SizedBox(height: 8.0),
+                  _SaveButton(
+                    onPressed: onSavePressed,
+                  ),
+                  SizedBox(height: 8.0),
+                ],
+              ),
             ),
           ),
         ),
       ),
     );
   }
+
+  void onSavePressed(){
+    //formKey는 생성을 했는데, Form 위젯과 결합을 안했을 때.
+    if(formKey.currentState == null){
+      return;
+    }
+
+    if(formKey.currentState!.validate()){ //validate를 통과하고 에러가 없으면 true.
+      print('에러가 없습니다.');
+      formKey.currentState!.save(); //form을 save하면 form안에 있는 모든 텍스트 필드의 onSaved가 실행됨.
+      print('content: $content');
+    }else{ //에러가 있는 경우
+      print('에러가 있습니다!');
+    }
+  }
+
+  void onContentSaved(String? val){
+    content = val;
+  }
+
 }
 
 class _SaveButton extends StatelessWidget {
-  const _SaveButton({super.key});
+  final VoidCallback onPressed;
+
+  const _SaveButton({
+    required this.onPressed,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -50,11 +93,10 @@ class _SaveButton extends StatelessWidget {
       children: [
         Expanded(
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: onPressed,
             child: Text('저장'),
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(CORAL_PINK),
-
             ),
           ),
         ),
