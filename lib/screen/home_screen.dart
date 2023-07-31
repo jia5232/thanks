@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:thanks_life_daily/component/calendar.dart';
-import 'package:thanks_life_daily/component/schedule_card.dart';
 import 'package:thanks_life_daily/component/thanks_bottom_sheet.dart';
 import 'package:thanks_life_daily/component/thanks_card.dart';
 import 'package:thanks_life_daily/component/today_banner.dart';
