@@ -17,7 +17,7 @@ class Calendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final defaultBoxDeco = BoxDecoration(
-      color: Colors.grey[200],
+      color: LIGHT_CORAL,
       borderRadius: BorderRadius.circular(6.0),
     );
 

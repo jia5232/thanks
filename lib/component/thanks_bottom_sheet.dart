@@ -25,7 +25,7 @@ class _ThanksBottomSheetState extends State<ThanksBottomSheet> {
       },
       child: Container(
         height: MediaQuery.of(context).size.height / 2 + bottomInset / 2,
-        color: Colors.pink.shade50,
+        color: BEIGE,
         child: Padding(
           padding: EdgeInsets.only(bottom: bottomInset),
           child: Padding(
@@ -96,7 +96,7 @@ class _SaveButton extends StatelessWidget {
             onPressed: onPressed,
             child: Text('저장'),
             style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(CORAL_PINK),
+              backgroundColor: MaterialStateProperty.all(CORAL),
             ),
           ),
         ),
