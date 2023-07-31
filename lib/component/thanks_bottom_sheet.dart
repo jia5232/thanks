@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:thanks_life_daily/component/custom_text_field.dart';
 import 'package:thanks_life_daily/const/colors.dart';
+import 'package:thanks_life_daily/database/drift_database.dart';
+import 'package:drift/drift.dart' show Value;
 
 class ThanksBottomSheet extends StatefulWidget {
+  final DateTime selectedDate;
+  final int? thankId;
 
-  const ThanksBottomSheet({super.key});
+  const ThanksBottomSheet({
+    required this.selectedDate,
+    this.thankId,
+    super.key,
+  });
 
   @override
   State<ThanksBottomSheet> createState() => _ThanksBottomSheetState();
@@ -58,25 +67,35 @@ class _ThanksBottomSheetState extends State<ThanksBottomSheet> {
     );
   }
 
-  void onSavePressed(){
+  void onSavePressed() async {
     //formKey는 생성을 했는데, Form 위젯과 결합을 안했을 때.
-    if(formKey.currentState == null){
+    if (formKey.currentState == null) {
       return;
     }
 
-    if(formKey.currentState!.validate()){ //validate를 통과하고 에러가 없으면 true.
-      print('에러가 없습니다.');
-      formKey.currentState!.save(); //form을 save하면 form안에 있는 모든 텍스트 필드의 onSaved가 실행됨.
-      print('content: $content');
-    }else{ //에러가 있는 경우
-      print('에러가 있습니다!');
+    if (formKey.currentState!.validate()) {
+      //validate를 통과하고 에러가 없으면 true.
+      formKey.currentState!
+          .save(); //form을 save하면 form안에 있는 모든 텍스트 필드의 onSaved가 실행됨.
+
+      final key = await GetIt.I<LocalDatabase>().createThank(
+        ThanksCompanion(
+          date: Value(widget.selectedDate),
+          content: Value(content!),
+        ),
+      );
+
+      Navigator.of(context).pop();
+
+    } else {
+      //에러가 있는 경우
+      print('에러가 있습니다.');
     }
   }
 
-  void onContentSaved(String? val){
+  void onContentSaved(String? val) {
     content = val;
   }
-
 }
 
 class _SaveButton extends StatelessWidget {

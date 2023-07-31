@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:thanks_life_daily/component/calendar.dart';
 import 'package:thanks_life_daily/component/thanks_bottom_sheet.dart';
 import 'package:thanks_life_daily/component/thanks_card.dart';
 import 'package:thanks_life_daily/component/today_banner.dart';
 import 'package:thanks_life_daily/const/colors.dart';
+import 'package:thanks_life_daily/database/drift_database.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,7 +15,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  DateTime selectedDay = DateTime.now();
+  DateTime selectedDay = DateTime.utc(
+    DateTime.now().year,
+    DateTime.now().month,
+    DateTime.now().day,
+  );
   DateTime focusedDay = DateTime.now();
 
   @override
@@ -34,7 +40,9 @@ class _HomeScreenState extends State<HomeScreen> {
               scheduleCount: 4,
             ),
             SizedBox(height: 8.0),
-            _ThanksCardList(),
+            _ThanksCardList(
+              selectedDate: selectedDay,
+            ),
           ],
         ),
       ),
@@ -44,9 +52,14 @@ class _HomeScreenState extends State<HomeScreen> {
   FloatingActionButton renderFloatingActionButton() {
     return FloatingActionButton(
       onPressed: () {
-        showModalBottomSheet(context: context, isScrollControlled: true, builder: (_){
-          return ThanksBottomSheet();
-        });
+        showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (_) {
+              return ThanksBottomSheet(
+                selectedDate: selectedDay,
+              );
+            });
       },
       backgroundColor: PRIMARY_COLOR,
       child: Icon(Icons.add),
@@ -62,25 +75,51 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class _ThanksCardList extends StatelessWidget {
-  const _ThanksCardList({super.key});
+  final DateTime selectedDate;
+
+  const _ThanksCardList({
+    required this.selectedDate,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: ListView.separated(
-            itemCount: 3,
-            separatorBuilder: (context, index) {
-              return SizedBox(
-                height: 8.0,
-              );
-            },
-            itemBuilder: (context, index) {
-              return ThanksCard(
-                number: (index + 1).toString(),
-                content: '모두 건강함에 감사',
-              );
+        child: StreamBuilder<List<Thank>>(
+            stream:
+                GetIt.I<LocalDatabase>().watchDateSelectedThanks(selectedDate),
+            builder: (context, snapshot) {
+              print(snapshot.data);
+              if (!snapshot.hasData) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              if (snapshot.hasData && snapshot.data!.isEmpty) {
+                return Center(
+                  child: Text(
+                    '나만의 감사일기를 작성해보세요!',
+                    style: TextStyle(color: Colors.black45),
+                  ),
+                );
+              }
+
+              return ListView.separated(
+                  itemCount: snapshot.data!.length,
+                  separatorBuilder: (context, index) {
+                    return SizedBox(
+                      height: 8.0,
+                    );
+                  },
+                  itemBuilder: (context, index) {
+                    final thank = snapshot.data![index];
+
+                    return ThanksCard(
+                      number: (index + 1).toString(),
+                      content: thank.content,
+                    );
+                  });
             }),
       ),
     );

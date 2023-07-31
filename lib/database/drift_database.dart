@@ -20,6 +20,15 @@ class LocalDatabase extends _$LocalDatabase {
   Future<int> createThank(ThanksCompanion data) =>
       into(thanks).insert(data);
 
+  Stream<List<Thank>> watchDateSelectedThanks(DateTime date){
+    // final query = select(thanks); //1.query에 where라는 필터를 적용해줌.
+    // query.where((tbl) => tbl.date.equals(date)); //2.select에서 바로 watch가 되도록 연결해줌.
+    // return query.watch();
+
+    return (select(thanks)..where((tbl)=> tbl.date.equals(date))).watch();
+    //..을 쓰면 where문은 실행이 되는데 watch입장에서 리턴으로 돌아오는 값은 그 앞에 있는 select이다. 그래서 에러가 없어진다.
+  }
+
   @override
   int get schemaVersion => 1;
 }
