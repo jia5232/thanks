@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:thanks_life_daily/const/colors.dart';
+import 'package:thanks_life_daily/database/drift_database.dart';
 
 class TodayBanner extends StatelessWidget {
   final DateTime selectedDay;
-  final int scheduleCount;
 
   const TodayBanner({
     required this.selectedDay,
-    required this.scheduleCount,
     super.key,
   });
 
@@ -29,9 +29,20 @@ class TodayBanner extends StatelessWidget {
               '${selectedDay.year}년 ${selectedDay.month}월 ${selectedDay.day}일의 감사일기',
               style: textStyle,
             ),
-            Text(
-              '${scheduleCount}개',
-              style: textStyle,
+            StreamBuilder<List<Thank>>(
+              stream: GetIt.I<LocalDatabase>().watchDateSelectedThanks(selectedDay),
+              builder: (context, snapshot) {
+                int count = 0;
+
+                if(snapshot.hasData){
+                  count = snapshot.data!.length;
+                }
+
+                return Text(
+                  '${count}개',
+                  style: textStyle,
+                );
+              }
             ),
           ],
         ),
