@@ -15,9 +15,10 @@ class ThanksCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
+        color: LIGHT_CORAL,
         border: Border.all(
           width: 1.0,
-          color: PRIMARY_COLOR,
+          color: BEIGE,
         ),
         borderRadius: BorderRadius.circular(8.0),
       ),
@@ -62,7 +63,12 @@ class _Content extends StatelessWidget {
             style: textStyle,
           ),
           SizedBox(width: 16.0),
-          Text(content),
+          Text(
+            content,
+            overflow: TextOverflow.fade,
+            maxLines: 1,
+            softWrap: false,
+          ),
         ],
       ),
     );

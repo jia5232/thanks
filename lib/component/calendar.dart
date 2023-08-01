@@ -47,6 +47,8 @@ class Calendar extends StatelessWidget {
           fontWeight: FontWeight.w700,
           fontSize: 16.0,
         ),
+        leftChevronVisible: false,
+        rightChevronVisible: false,
       ),
       calendarStyle: CalendarStyle(
         isTodayHighlighted: false,

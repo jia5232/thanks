@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:thanks_life_daily/component/calendar.dart';
 import 'package:thanks_life_daily/component/thanks_bottom_sheet.dart';
 import 'package:thanks_life_daily/component/thanks_card.dart';
+import 'package:thanks_life_daily/component/thanks_popup_sheet.dart';
 import 'package:thanks_life_daily/component/today_banner.dart';
 import 'package:thanks_life_daily/const/colors.dart';
 import 'package:thanks_life_daily/database/drift_database.dart';
@@ -90,7 +91,7 @@ class _ThanksCardList extends StatelessWidget {
             stream:
                 GetIt.I<LocalDatabase>().watchDateSelectedThanks(selectedDate),
             builder: (context, snapshot) {
-              print(snapshot.data);
+              // print(snapshot.data);
               if (!snapshot.hasData) {
                 return Center(child: CircularProgressIndicator());
               }
@@ -114,9 +115,37 @@ class _ThanksCardList extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final thank = snapshot.data![index];
 
-                    return ThanksCard(
-                      number: (index + 1).toString(),
-                      content: thank.content,
+                    return GestureDetector(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return ThanksPopupSheet(
+                                  onUpdatePressed: () {
+                                    Navigator.of(context).pop();
+                                    showModalBottomSheet(
+                                      context: context,
+                                      isScrollControlled: true,
+                                      builder: (_) {
+                                        return ThanksBottomSheet(
+                                          selectedDate: selectedDate,
+                                          thankId: thank.id,
+                                        );
+                                      },
+                                    );
+                                  },
+                                  onDeletePressed: () {
+                                    GetIt.I<LocalDatabase>()
+                                        .removeThank(thank.id);
+                                    Navigator.of(context).pop();
+                                  },
+                                  thankContent: thank.content);
+                            });
+                      },
+                      child: ThanksCard(
+                        number: (index + 1).toString(),
+                        content: thank.content,
+                      ),
                     );
                   });
             }),

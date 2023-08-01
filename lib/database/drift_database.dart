@@ -17,8 +17,17 @@ class LocalDatabase extends _$LocalDatabase {
   LocalDatabase() : super(_openConnection());
 
   //쿼리
+  Future<Thank> getThankById(int id) =>
+      (select(thanks)..where((tbl) => tbl.id.equals(id))).getSingle();
+
   Future<int> createThank(ThanksCompanion data) =>
       into(thanks).insert(data);
+
+  Future<int> removeThank(int id) =>
+      (delete(thanks)..where((tbl) => tbl.id.equals(id))).go();
+
+  Future<int> updateThankById(int id, ThanksCompanion data) =>
+      (update(thanks)..where((tbl) => tbl.id.equals(id))).write(data);
 
   Stream<List<Thank>> watchDateSelectedThanks(DateTime date){
     final query = select(thanks); //1.query에 where라는 필터를 적용해줌.

@@ -3,10 +3,12 @@ import 'package:thanks_life_daily/const/colors.dart';
 
 class CustomTextField extends StatelessWidget {
   final String lable;
+  final String initialValue;
   final FormFieldSetter<String> onSaved;
 
   const CustomTextField({
     required this.lable,
+    required this.initialValue,
     required this.onSaved,
     super.key,
   });
@@ -45,6 +47,7 @@ class CustomTextField extends StatelessWidget {
             maxLines: null,
             maxLength: 1000,
             keyboardType: TextInputType.multiline,
+            initialValue: initialValue,
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white70,
