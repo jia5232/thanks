@@ -63,11 +63,13 @@ class _Content extends StatelessWidget {
             style: textStyle,
           ),
           SizedBox(width: 16.0),
-          Text(
-            content,
-            overflow: TextOverflow.fade,
-            maxLines: 1,
-            softWrap: false,
+          Expanded(
+            child: Text(
+              content,
+              overflow: TextOverflow.fade,
+              maxLines: 1,
+              softWrap: false,
+            ),
           ),
         ],
       ),
