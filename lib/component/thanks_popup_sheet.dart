@@ -26,20 +26,20 @@ class ThanksPopupSheet extends StatelessWidget {
       children: [
         Padding(
           padding:
-              EdgeInsets.only(left: 32.0, right: 32.0, top: 10.0, bottom: 10.0),
+              const EdgeInsets.only(left: 32.0, right: 32.0, top: 10.0, bottom: 10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(thankContent),
-              SizedBox(
+              const SizedBox(
                 height: 20.0,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CustomButton(onPressed: onUpdatePressed, text: '수정'),
-                  SizedBox(
-                    width: 50.0,
+                  const SizedBox(
+                    width: 60.0,
                   ),
                   CustomButton(onPressed: onDeletePressed, text: '삭제'),
                 ],

@@ -49,6 +49,7 @@ class _Content extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     final textStyle = TextStyle(
       fontWeight: FontWeight.w600,
       color: PRIMARY_COLOR,
@@ -62,7 +63,7 @@ class _Content extends StatelessWidget {
             number,
             style: textStyle,
           ),
-          SizedBox(width: 16.0),
+          const SizedBox(width: 16.0),
           Expanded(
             child: Text(
               content,
