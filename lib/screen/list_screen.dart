@@ -50,6 +50,7 @@ class _ListScreenState extends State<ListScreen> {
       disableFuture: true,
       backgroundColor: DEEP_BEIGE,
       selectionColor: PRIMARY_COLOR,
+      //selectedDate추가할것!!
     );
     if( picked != null && picked != selectedDate){
       setState(() {

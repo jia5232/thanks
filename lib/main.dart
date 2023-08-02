@@ -27,6 +27,7 @@ void main() async {
       theme: ThemeData(
         fontFamily: 'NotoSans',
       ),
+      darkTheme: ThemeData.dark(),
       home: MainScreen(),
     ),
   );
