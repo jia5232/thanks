@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:thanks_life_daily/database/drift_database.dart';
 import 'package:thanks_life_daily/screen/home_screen.dart';
@@ -15,6 +16,14 @@ void main() async {
 
   runApp(
     MaterialApp(
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        Locale('en', ''), // English, no country code
+        Locale('ko', ''),
+      ],
       theme: ThemeData(
         fontFamily: 'NotoSans',
       ),

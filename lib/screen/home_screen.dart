@@ -16,7 +16,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   DateTime selectedDay = DateTime.utc(
     DateTime.now().year,
     DateTime.now().month,
@@ -37,11 +36,11 @@ class _HomeScreenState extends State<HomeScreen> {
               focusedDay: focusedDay,
               onDaySelected: onDaySelected,
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             TodayBanner(
               selectedDay: selectedDay,
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             _ThanksCardList(
               selectedDate: selectedDay,
             ),
@@ -99,7 +98,7 @@ class _ThanksCardList extends StatelessWidget {
               }
 
               if (snapshot.hasData && snapshot.data!.isEmpty) {
-                return Center(
+                return const Center(
                   child: Text(
                     '나만의 감사일기를 작성해보세요!',
                     style: TextStyle(color: Colors.black45),
@@ -110,7 +109,7 @@ class _ThanksCardList extends StatelessWidget {
               return ListView.separated(
                   itemCount: snapshot.data!.length,
                   separatorBuilder: (context, index) {
-                    return SizedBox(
+                    return const SizedBox(
                       height: 8.0,
                     );
                   },
@@ -123,25 +122,27 @@ class _ThanksCardList extends StatelessWidget {
                             context: context,
                             builder: (BuildContext context) {
                               return ThanksPopupSheet(
-                                  onUpdatePressed: () {
-                                    Navigator.of(context).pop();
-                                    showModalBottomSheet(
-                                      context: context,
-                                      isScrollControlled: true,
-                                      builder: (_) {
-                                        return ThanksBottomSheet(
-                                          selectedDate: selectedDate,
-                                          thankId: thank.id,
-                                        );
-                                      },
-                                    );
-                                  },
-                                  onDeletePressed: () {
-                                    GetIt.I<LocalDatabase>()
-                                        .removeThank(thank.id);
-                                    Navigator.of(context).pop();
-                                  },
-                                  thankContent: thank.content);
+                                onUpdatePressed: () {
+                                  Navigator.of(context).pop();
+                                  showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    builder: (_) {
+                                      return ThanksBottomSheet(
+                                        selectedDate: selectedDate,
+                                        thankId: thank.id,
+                                      );
+                                    },
+                                  );
+                                },
+                                onDeletePressed: () {
+                                  GetIt.I<LocalDatabase>()
+                                      .removeThank(thank.id);
+                                  Navigator.of(context).pop();
+                                },
+                                thankContent: thank.content,
+                                thankCreatedAt: thank.date,
+                              );
                             });
                       },
                       child: ThanksCard(

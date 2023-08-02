@@ -38,6 +38,12 @@ class LocalDatabase extends _$LocalDatabase {
     // //..을 쓰면 where문은 실행이 되는데 watch입장에서 리턴으로 돌아오는 값은 그 앞에 있는 select이다. 그래서 에러가 없어진다.
   }
 
+  Stream<List<Thank>> watchMonthSelectedThanks(DateTime date){
+    final query = select(thanks);
+    query.where((tbl) => tbl.date.year.equals(date.year) & tbl.date.month.equals(date.month));
+    return query.watch();
+  }
+
   @override
   int get schemaVersion => 1;
 }
