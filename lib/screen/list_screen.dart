@@ -40,7 +40,7 @@ class _ListScreenState extends State<ListScreen> {
   );
 
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime picked = await SimpleMonthYearPicker
+    DateTime picked = await SimpleMonthYearPicker
         .showMonthYearPickerDialog(
       context: context,
       titleTextStyle: monthTextStyle,
@@ -173,6 +173,7 @@ class _ThanksCardList extends StatelessWidget {
                                 isScrollControlled: true,
                                 builder: (_) {
                                   return ThanksBottomSheet(
+                                    date: thank.date,
                                     selectedDate: selectedDate,
                                     thankId: thank.id,
                                   );

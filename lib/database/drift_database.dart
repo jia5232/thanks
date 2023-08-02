@@ -41,6 +41,7 @@ class LocalDatabase extends _$LocalDatabase {
   Stream<List<Thank>> watchMonthSelectedThanks(DateTime date){
     final query = select(thanks);
     query.where((tbl) => tbl.date.year.equals(date.year) & tbl.date.month.equals(date.month));
+    query.orderBy([(tbl) => OrderingTerm(expression: tbl.date)]);
     return query.watch();
   }
 

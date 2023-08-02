@@ -7,10 +7,12 @@ import 'package:drift/drift.dart' show Value;
 
 class ThanksBottomSheet extends StatefulWidget {
   final DateTime selectedDate;
+  final DateTime? date; //
   final int? thankId;
 
   const ThanksBottomSheet({
     required this.selectedDate,
+    this.date, //
     this.thankId,
     super.key,
   });
@@ -115,7 +117,7 @@ class _ThanksBottomSheetState extends State<ThanksBottomSheet> {
         await GetIt.I<LocalDatabase>().updateThankById(
           widget.thankId!,
           ThanksCompanion(
-            date: Value(widget.selectedDate),
+            date: Value(widget.date ?? widget.selectedDate), //date가 들어오면 모아보기에서 수정, 안들어오면 홈에서 수정.
             content: Value(content!),
           ),
         );
