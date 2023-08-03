@@ -17,20 +17,13 @@ class ListScreen extends StatefulWidget {
 
 class _ListScreenState extends State<ListScreen> {
   late DateTime selectedDate;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   selectedDate = DateTime(
-  //     DateTime.now().year,
-  //     DateTime.now().month,
-  //   );
-  // }
+  late DateTime picked;
 
   @override
   void initState() {
     super.initState();
     selectedDate = DateTime.now();
+    picked = DateTime.now();
   }
 
   final monthTextStyle = TextStyle(
@@ -40,7 +33,7 @@ class _ListScreenState extends State<ListScreen> {
   );
 
   Future<void> _selectDate(BuildContext context) async {
-    DateTime picked = await SimpleMonthYearPicker
+    picked = await SimpleMonthYearPicker
         .showMonthYearPickerDialog(
       context: context,
       titleTextStyle: monthTextStyle,
@@ -50,7 +43,7 @@ class _ListScreenState extends State<ListScreen> {
       disableFuture: true,
       backgroundColor: DEEP_BEIGE,
       selectionColor: PRIMARY_COLOR,
-      //selectedDate추가할것!!
+      newSelectedDate: picked,
     );
     if( picked != null && picked != selectedDate){
       setState(() {
