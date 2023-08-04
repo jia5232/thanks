@@ -44,7 +44,8 @@ dependencies:
   path: ^1.0.1
   get_it: ^7.6.0
   simple_month_year_picker: ^1.0.5
-
+  package_info: ^2.0.2
+  flutter_email_sender: ^6.0.1
 
 dev_dependencies:
   flutter_test:

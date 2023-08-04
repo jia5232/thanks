@@ -57,13 +57,7 @@ class _ListScreenState extends State<ListScreen> {
     final titleTextStyle = TextStyle(
       fontWeight: FontWeight.w500,
       color: Colors.black,
-      fontSize: 15.0,
-    );
-
-    final monthTextStyle = TextStyle(
-      fontWeight: FontWeight.w600,
-      color: Colors.black54,
-      fontSize: 14.0,
+      fontSize: 16.0,
     );
 
     return SafeArea(
@@ -129,8 +123,6 @@ class _ThanksCardList extends StatelessWidget {
           stream:
               GetIt.I<LocalDatabase>().watchMonthSelectedThanks(selectedDate),
           builder: (context, snapshot) {
-            print(snapshot.data);
-
             if (!snapshot.hasData) {
               return Center(child: CircularProgressIndicator());
             }

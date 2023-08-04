@@ -42,3 +42,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# !키워드로 특정 폴더를 포함.
+!/simple_month_year_picker-1.0.5
