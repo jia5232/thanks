@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:package_info/package_info.dart';
-import 'package:thanks_life_daily/component/simple_popup_sheet.dart';
 import 'package:thanks_life_daily/const/colors.dart';
 import 'package:thanks_life_daily/main.dart';
 
