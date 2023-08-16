@@ -20,25 +20,40 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+
   const MyApp({super.key});
+
+  static final ValueNotifier<ThemeMode> themeNotifier =
+  ValueNotifier(ThemeMode.light);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: [
-        Locale('en', ''), // English, no country code
-        Locale('ko', ''),
-      ],
-      theme: ThemeData(
-        fontFamily: 'NotoSans',
-      ),
-      darkTheme: ThemeData.dark(),
-      home: MainScreen(),
+    final customDarkTheme = ThemeData(
+      brightness: Brightness.dark,
+      fontFamily: 'NotoSans',
+    );
+
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: themeNotifier,
+      builder: (context, ThemeMode currentMode, __){
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: [
+            Locale('en', ''), // English, no country code
+            Locale('ko', ''),
+          ],
+          theme: ThemeData(
+            fontFamily: 'NotoSans',
+          ),
+          darkTheme: customDarkTheme,
+          themeMode: currentMode,
+          home: MainScreen(),
+        );
+      },
     );
   }
 }

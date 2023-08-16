@@ -57,6 +57,15 @@ class _MoreScreenState extends State<MoreScreen> {
                     title: '문의하기',
                     onPressed: onContactPressed,
                   ),
+                  CustomTextButton(
+                    icon: MyApp.themeNotifier.value == ThemeMode.light
+                        ? Icons.dark_mode
+                        : Icons.light_mode,
+                    title: MyApp.themeNotifier.value == ThemeMode.light
+                        ? '다크모드로 변경'
+                        : '라이트모드로 변경',
+                    onPressed: onDarkLightPressed,
+                  ),
                 ],
               ),
             ],
@@ -145,44 +154,53 @@ class _MoreScreenState extends State<MoreScreen> {
 
   void onContactPressed() async {
     final Email email = Email(
-      body: '문의할 사항을 아래에 작성해주세요.',
-      subject: '[thanks 문의]',
-      recipients: ['99jiasmin@gmail.com'],
-      cc: [],
-      bcc: [],
-      attachmentPaths: [],
-      isHTML: false
-    );
+        body: '문의할 사항을 아래에 작성해주세요.',
+        subject: '[thanks 문의]',
+        recipients: ['jia5232@naver.com'],
+        cc: [],
+        bcc: [],
+        attachmentPaths: [],
+        isHTML: false);
 
-    try{
+    try {
       await FlutterEmailSender.send(email);
-    } catch(error){
+    } catch (error) {
       String title = '문의하기';
-      String message = '기본 메일 앱을 사용할 수 없습니다. 이메일로 연락주세요! 99jiasmin@gmail.com';
+      String message = '기본 메일 앱을 사용할 수 없습니다. 이메일로 연락주세요! jia5232@naver.com';
       showErrorAlert(title, message);
     }
   }
 
-  void showErrorAlert(String title, String message){
-    showDialog(context: context, builder: (BuildContext context){
-      return SimpleDialog(
-        backgroundColor: DEEP_BEIGE,
-        title: Text(title,),
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(
-                left: 32.0, right: 32.0, top: 10.0, bottom: 10.0),
-            child: Column(
-              children: [
-                Text(message),
-              ],
-            ),
-          ),
-        ],
-      );
-    });
+  void onDarkLightPressed() {
+    MyApp.themeNotifier.value = MyApp.themeNotifier.value == ThemeMode.light
+        ? ThemeMode.dark
+        : ThemeMode.light;
+    setState(() {});
   }
 
+  void showErrorAlert(String title, String message) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+            backgroundColor: DEEP_BEIGE,
+            title: Text(
+              title,
+            ),
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 32.0, right: 32.0, top: 10.0, bottom: 10.0),
+                child: Column(
+                  children: [
+                    Text(message),
+                  ],
+                ),
+              ),
+            ],
+          );
+        });
+  }
 }
 
 class CustomTextButton extends StatelessWidget {
@@ -211,7 +229,12 @@ class CustomTextButton extends StatelessWidget {
             ),
             Text(
               title,
-              style: TextStyle(fontSize: 16.0, color: Colors.black),
+              style: TextStyle(
+                fontSize: 16.0,
+                color: MyApp.themeNotifier.value == ThemeMode.light
+                    ? Colors.black
+                    : Colors.white,
+              ),
             ),
           ],
         ),
