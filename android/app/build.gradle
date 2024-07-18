@@ -33,12 +33,12 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace "com.jiasmin.thanks_life_daily"
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility 34
     }
 
     kotlinOptions {

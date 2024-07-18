@@ -4,6 +4,8 @@ import 'package:package_info/package_info.dart';
 import 'package:thanks_life_daily/const/colors.dart';
 import 'package:thanks_life_daily/main.dart';
 
+import '../notification/notification.dart';
+
 class MoreScreen extends StatefulWidget {
   const MoreScreen({super.key});
 
@@ -12,6 +14,17 @@ class MoreScreen extends StatefulWidget {
 }
 
 class _MoreScreenState extends State<MoreScreen> {
+  @override
+  void initState() {
+    FlutterLocalNotification.init();
+    Future.delayed(
+      const Duration(seconds: 3),
+      FlutterLocalNotification.requestNotificationPermission(),
+    );
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final textStyle = TextStyle(
@@ -66,6 +79,13 @@ class _MoreScreenState extends State<MoreScreen> {
                         : '라이트모드로 변경',
                     onPressed: onDarkLightPressed,
                   ),
+                  // CustomTextButton(
+                  //   icon: Icons.notifications,
+                  //   title: '푸시알림 설정',
+                  //   onPressed: () async {
+                  //     FlutterLocalNotification.showNotification();
+                  //   },
+                  // ),
                 ],
               ),
             ],
@@ -120,43 +140,11 @@ class _MoreScreenState extends State<MoreScreen> {
     );
   }
 
-  // void onHelpDeskPressed(){
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return SimpleDialog(
-  //         backgroundColor: DEEP_BEIGE,
-  //         title: Text("도움말"),
-  //         children: [
-  //           Padding(
-  //             padding: const EdgeInsets.only(
-  //                 left: 32.0, right: 32.0, top: 10.0, bottom: 10.0),
-  //             child: Column(
-  //               mainAxisAlignment: MainAxisAlignment.start,
-  //               children: [
-  //                 Column(
-  //                   children: [
-  //                     Text('thanks는 어떤 어플인가요?'),
-  //                     Text(''),
-  //                   ],
-  //                 ),
-  //                 const SizedBox(
-  //                   height: 10.0,
-  //                 ),
-  //               ],
-  //             ),
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
-
   void onContactPressed() async {
     final Email email = Email(
         body: '문의할 사항을 아래에 작성해주세요.',
         subject: '[thanks 문의]',
-        recipients: ['jia5232@naver.com'],
+        recipients: ['99jiasmin@gmail.com'],
         cc: [],
         bcc: [],
         attachmentPaths: [],
@@ -166,7 +154,7 @@ class _MoreScreenState extends State<MoreScreen> {
       await FlutterEmailSender.send(email);
     } catch (error) {
       String title = '문의하기';
-      String message = '기본 메일 앱을 사용할 수 없습니다. 이메일로 연락주세요! jia5232@naver.com';
+      String message = '기본 메일 앱을 사용할 수 없습니다. 이메일로 연락주세요! 99jiasmin@gmail.com';
       showErrorAlert(title, message);
     }
   }
@@ -180,26 +168,27 @@ class _MoreScreenState extends State<MoreScreen> {
 
   void showErrorAlert(String title, String message) {
     showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return SimpleDialog(
-            backgroundColor: DEEP_BEIGE,
-            title: Text(
-              title,
-            ),
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 32.0, right: 32.0, top: 10.0, bottom: 10.0),
-                child: Column(
-                  children: [
-                    Text(message),
-                  ],
-                ),
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          backgroundColor: DEEP_BEIGE,
+          title: Text(
+            title,
+          ),
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 32.0, right: 32.0, top: 10.0, bottom: 10.0),
+              child: Column(
+                children: [
+                  Text(message),
+                ],
               ),
-            ],
-          );
-        });
+            ),
+          ],
+        );
+      },
+    );
   }
 }
 
@@ -242,19 +231,6 @@ class CustomTextButton extends StatelessWidget {
           foregroundColor: PRIMARY_COLOR,
         ),
       ),
-    );
-  }
-}
-
-class InformationBody extends StatelessWidget {
-  const InformationBody({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text('hi'),
-      ],
     );
   }
 }
